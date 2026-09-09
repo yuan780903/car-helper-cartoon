@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>外勤夥伴・車車補助速查站</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Noto+Sans+TC:wght@500;700;900&display=swap">
+<style>
+:root{
+  --sky1:#8ED6F8; --sky2:#DFF4FF; --road:#4A4A55; --lane:#FFD93B;
+  --ink:#2B2350; --panel:#FFFFFF; --sub:#6B6486; --line:#D9D3F0;
+  --green:#37B24D; --green-soft:#E3F7E8; --red:#F0544F; --red-soft:#FDE8E7;
+  --gold:#F5A623; --gold-soft:#FFF3DC; --blue:#4D7CFE; --blue-soft:#E9EFFF;
+  --outline:#2B2350;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--sky2);color:var(--ink);font-family:"Baloo 2","Noto Sans TC","Microsoft JhengHei",sans-serif;font-size:15.5px;line-height:1.65}
+.wrap{max-width:1020px;margin:0 auto;padding:0 16px 60px}
+
+/* ---------- cartoon sky header ---------- */
+.sky{background:linear-gradient(180deg,var(--sky1),var(--sky2));position:relative;overflow:hidden;padding:34px 16px 0;border-bottom:6px solid var(--outline)}
+.sun{position:absolute;top:30px;right:17%;width:74px;height:74px;border-radius:50%;background:#FFD93B;border:4px solid var(--outline);box-shadow:0 0 0 10px rgba(255,217,59,.35);animation:spinSun 24s linear infinite}
+.sun::before{content:"";position:absolute;inset:-18px;border-radius:50%;border:4px dashed rgba(43,35,80,.35)}
+@keyframes spinSun{to{transform:rotate(360deg)}}
+.cloud{position:absolute;background:#fff;border:3.5px solid var(--outline);border-radius:999px;opacity:.95;animation:drift linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border:3.5px solid var(--outline);border-radius:50%}
+.c1{top:26px;left:-140px;width:110px;height:38px;animation-duration:38s}
+.c1::before{width:44px;height:44px;top:-24px;left:16px}
+.c1::after{width:32px;height:32px;top:-16px;left:56px}
+.c2{top:78px;left:-240px;width:80px;height:30px;animation-duration:52s;animation-delay:-20s}
+.c2::before{width:34px;height:34px;top:-18px;left:12px}
+.c2::after{width:24px;height:24px;top:-12px;left:42px}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(calc(100vw + 300px))}}
+.hero{max-width:1020px;margin:0 auto;position:relative;z-index:2}
+h1{font-family:"Baloo 2","Noto Sans TC",sans-serif;font-weight:900;font-size:clamp(26px,5vw,40px);margin:0;letter-spacing:.02em;text-shadow:3px 3px 0 #fff}
+.tagline{font-weight:700;color:var(--ink);margin:6px 0 2px}
+.stamp{display:inline-block;font-size:12.5px;font-weight:900;background:var(--gold);border:3px solid var(--outline);color:var(--ink);border-radius:999px;padding:3px 14px;box-shadow:2px 2px 0 var(--outline);margin:6px 0}
+.srcline{font-size:12.5px;color:var(--sub);margin:6px 0 14px;max-width:760px}
+.soundbtn{position:absolute;top:0;right:0;z-index:3;font-size:15px;font-weight:900;font-family:inherit;background:#fff;border:3.5px solid var(--outline);border-radius:999px;padding:8px 16px;cursor:pointer;box-shadow:3px 3px 0 var(--outline);transition:transform .1s}
+.soundbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--outline)}
+.maker{position:absolute;top:52px;right:0;z-index:3;display:inline-flex;align-items:center;gap:7px;background:#fff;border:3px solid var(--outline);border-radius:999px;padding:5px 14px 5px 6px;box-shadow:3px 3px 0 var(--outline);font-size:13px;font-weight:700;color:var(--sub);white-space:nowrap}
+.maker b{color:var(--ink);font-weight:900;font-size:14px}
+.maker .mk-avatar{width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;border:2.5px solid var(--outline)}
+@media (max-width:680px){ .maker{top:48px;font-size:11.5px;padding:4px 10px 4px 5px} .maker .mk-avatar{width:22px;height:22px;font-size:12px} }
+
+/* road + car */
+.road{position:relative;height:86px;background:var(--road);border-top:5px solid var(--outline);margin:14px -16px 0;overflow:hidden}
+.lane{position:absolute;top:50%;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--lane) 0 46px,transparent 46px 92px);animation:laneMove .7s linear infinite;transform:translateY(-50%)}
+@keyframes laneMove{to{background-position:-92px 0}}
+.car{position:absolute;bottom:10px;left:6%;width:150px;transition:left 1s cubic-bezier(.5,-.2,.4,1.3);filter:drop-shadow(3px 5px 0 rgba(0,0,0,.35))}
+.car.bounce{animation:carBounce .55s ease}
+@keyframes carBounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-9px) rotate(-2deg)}60%{transform:translateY(2px) rotate(1deg)}}
+.wheel{transform-origin:center;animation:spin .5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.honkTip{position:absolute;bottom:66px;font-family:inherit;font-weight:900;font-size:13px;color:#fff;opacity:.85;left:6%;transition:left 1s cubic-bezier(.5,-.2,.4,1.3);pointer-events:none}
+
+/* ---------- picker ---------- */
+.picker{position:sticky;top:0;z-index:9;background:var(--sky2);padding:14px 0 12px;border-bottom:3px solid var(--outline);display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center}
+.pk-label{font-size:13px;font-weight:900;color:var(--sub);letter-spacing:.14em}
+.seg{display:inline-flex;background:#fff;border:3.5px solid var(--outline);border-radius:999px;overflow:hidden;box-shadow:3px 3px 0 var(--outline)}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink);font:inherit;font-weight:700;padding:7px 15px;cursor:pointer}
+.seg button+button{border-left:3px solid var(--outline)}
+.seg button.on{background:var(--blue);color:#fff;font-weight:900}
+.tgl{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--sub);cursor:pointer;user-select:none}
+.tgl input{accent-color:var(--green);width:17px;height:17px}
+.you{margin:18px 0 6px;font-size:14px;font-weight:700;color:var(--sub)}
+.you b{color:var(--ink);font-weight:900}
+
+/* ---------- cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:12px 0 26px}
+.card{background:var(--panel);border:3.5px solid var(--outline);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:5px 6px 0 var(--outline);transition:transform .15s}
+.card:hover{transform:translateY(-4px) rotate(-.4deg)}
+.card h2{font-size:19px;font-weight:900;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0}
+.pill{font-size:11.5px;font-weight:900;letter-spacing:.08em;padding:3px 12px;border-radius:999px;border:2.5px solid var(--outline)}
+.pill.ok{background:var(--green);color:#fff}
+.pill.no{background:var(--red);color:#fff}
+.big{font-size:30px;font-weight:900;color:var(--green)}
+.card.na .big{color:var(--red);font-size:21px}
+.big small{font-size:13px;font-weight:700;color:var(--sub)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13px;margin:0}
+.kv dt{color:var(--sub);font-weight:700}
+.kv dd{margin:0;text-align:right;font-weight:700}
+.note{font-size:12.5px;color:var(--sub);border-top:2.5px dashed var(--line);padding-top:8px;margin-top:auto}
+.fuel{background:var(--gold-soft);border:3.5px solid var(--outline);border-radius:16px;padding:13px 18px;margin:0 0 26px;box-shadow:4px 4px 0 var(--outline);font-size:14px}
+.fuel b{color:#B57500}
+
+/* ---------- sections ---------- */
+section h2.sec{font-size:22px;font-weight:900;margin:30px 0 6px;display:flex;align-items:center;gap:9px}
+.sec-sub{font-size:13.5px;color:var(--sub);margin:0 0 12px;font-weight:700}
+.dep-strip{background:var(--red-soft);border:3.5px solid var(--outline);border-radius:14px;padding:10px 16px;margin:0 0 14px;font-size:13.5px;box-shadow:4px 4px 0 var(--outline)}
+.dep-strip b{color:var(--red)}
+.tblwrap{overflow-x:auto;background:var(--panel);border:3.5px solid var(--outline);border-radius:16px;box-shadow:5px 6px 0 var(--outline)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th{background:var(--blue);color:#fff;font-weight:900;padding:9px 10px;text-align:left;white-space:nowrap;border-bottom:3px solid var(--outline)}
+td{padding:8px 10px;border-top:2px solid var(--line);vertical-align:middle;background:var(--panel);font-weight:600}
+th:first-child,td:first-child{position:sticky;left:0;z-index:2;border-right:3px solid var(--outline)}
+th:first-child{z-index:3;background:var(--blue)}
+tr.best td{background:var(--green-soft)}
+tr.best td:first-child::before{content:"🏆 "}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.pay{font-weight:900;color:var(--green)}
+.pay.hi{color:var(--red)}
+.dep{font-weight:900;color:var(--red)}
+.zero{color:#B57500;font-weight:900}
+
+details{background:var(--panel);border:3.5px solid var(--outline);border-radius:16px;margin:12px 0;box-shadow:4px 5px 0 var(--outline)}
+summary{cursor:pointer;padding:13px 18px;font-weight:900;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::after{content:"🔽";font-size:13px}
+details[open] summary::after{content:"🔼"}
+details .bd{padding:0 18px 14px;font-size:13.5px}
+details .bd p{margin:6px 0}
+.warn{color:var(--red);font-weight:900}
+.ask{background:var(--blue-soft);border:2.5px dashed var(--blue);border-radius:12px;padding:10px 12px;font-size:13px;margin-top:8px}
+.ask b{color:var(--blue)}
+footer{margin-top:36px;padding-top:14px;border-top:3px dashed var(--line);font-size:12px;color:var(--sub);text-align:center}
+@media (max-width:560px){ .car{width:110px} .sun{width:54px;height:54px} }
+</style>
+</head>
+<body>
+
+<div class="sky">
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="hero">
+    <button class="soundbtn" id="soundToggle" type="button">🔊 音效開</button>
+    <span class="maker"><span class="mk-avatar">莊</span>網站製作者｜<b>莊政遠</b></span>
+    <h1>🚗 外勤夥伴・車車補助速查站</h1>
+    <p class="tagline">點你的單位＋職等，嗶嗶！三秒看懂能選哪台、領多少 🎉</p>
+    <span class="stamp">資料更新：115.09.09</span>
+    <p class="srcline">依公司車輛管理辦法（115.06 生效版）與租賃公司 115 年 3–7 月報價整理；金額以公司最新公告為準，本頁僅供同仁快速參考。</p>
+  </div>
+  <div class="road">
+    <div class="lane"></div>
+    <div class="honkTip" id="honkTip">叭叭！</div>
+    <svg class="car" id="carSvg" viewBox="0 0 300 130" aria-hidden="true">
+      <rect x="30" y="52" width="240" height="46" rx="18" fill="#F0544F" stroke="#2B2350" stroke-width="7"/>
+      <path d="M78 56 Q95 18 150 18 Q205 18 222 56 Z" fill="#F0544F" stroke="#2B2350" stroke-width="7"/>
+      <path d="M100 52 Q112 30 148 30 L148 52 Z" fill="#BEE8FF" stroke="#2B2350" stroke-width="6"/>
+      <path d="M158 52 L158 30 Q192 30 204 52 Z" fill="#BEE8FF" stroke="#2B2350" stroke-width="6"/>
+      <circle cx="264" cy="68" r="9" fill="#FFD93B" stroke="#2B2350" stroke-width="5"/>
+      <g class="wheel" style="transform-box:fill-box">
+        <circle cx="90" cy="100" r="24" fill="#2B2350"/>
+        <circle cx="90" cy="100" r="11" fill="#DFD9F5"/>
+        <rect x="87" y="82" width="6" height="36" rx="3" fill="#2B2350"/>
+        <rect x="72" y="97" width="36" height="6" rx="3" fill="#2B2350"/>
+      </g>
+      <g class="wheel" style="transform-box:fill-box">
+        <circle cx="212" cy="100" r="24" fill="#2B2350"/>
+        <circle cx="212" cy="100" r="11" fill="#DFD9F5"/>
+        <rect x="209" y="82" width="6" height="36" rx="3" fill="#2B2350"/>
+        <rect x="194" y="97" width="36" height="6" rx="3" fill="#2B2350"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="wrap">
+<div class="picker" id="picker">
+  <span class="pk-label">單位</span>
+  <span class="seg" id="segUnit" role="group" aria-label="單位"></span>
+  <span class="pk-label">職等</span>
+  <span class="seg" id="segGrade" role="group" aria-label="職等"></span>
+  <label class="tgl" id="senWrap"><input type="checkbox" id="senior">資深業務代表（三、四職等，業務年資滿 10 年）</label>
+</div>
+
+<p class="you" id="youline"></p>
+<div class="cards" id="cards"></div>
+<div class="fuel" id="fuel"></div>
+
+<section>
+  <h2 class="sec">🧮 租賃車自付試算</h2>
+  <p class="sec-sub" id="rentSub"></p>
+  <div class="dep-strip"><b>⚠ 租購保證金</b>　租購 60 期需付保證金（乙／丙式同額）：<b>Vios 11 萬／Yaris Cross 13 萬／Altis・Corolla Cross・HR-V 各 15 萬／CR-V 20 萬</b>，交車前以保證金期票一次開立交付；期滿退還或抵買回價要簽約前確認。純租 36 期免保證金。</div>
+  <div class="tblwrap"><table id="rentTbl"></table></div>
+</section>
+
+<section>
+  <h2 class="sec">📖 簽約與使用必讀</h2>
+  <details open>
+    <summary>租購「不含維修」完整範圍＋保證金＋期滿買回價未載明</summary>
+    <div class="bd">
+      <p>租購乙式／丙式報價<b>不含維修</b>，以下全部自付：定期保養（機油、油品、工資）、零件更換、輪胎、電瓶、煞車皮等耗材、機件故障維修。租金僅含牌照稅、燃料稅、保險、監理規費（出險仍提供代步車）。租購版「行駛里程約定：無」——跑再多不加收超駛費，對高里程外勤是結構性優點。</p>
+      <p><b>保證金：</b>Vios 110,000／Yaris Cross 130,000／Altis・Corolla Cross・HR-V 各 150,000／CR-V 200,000 元（乙丙式同額），交車前以保證金期票一次開立交付出租人；純租免保證金。</p>
+      <p class="warn">期滿買回金額報價單未載明——僅寫依「汽車預買契約書」之解約價金對照表（提前終止付對照表金額＋保證金）。</p>
+      <div class="ask"><b>簽約前問租賃公司業務窗口四件事：</b>①期滿買回殘值多少　②逐期解約價金對照表先給一份　③保證金期滿退還或抵買回價　④過戶規費誰負擔。殘值沒到手前，「自付最低」不能當真。</div>
+    </div>
+  </details>
+  <details>
+    <summary>純租的里程與保養限制</summary>
+    <div class="bd">
+      <p>三年期滿行駛超過 <b>15 萬公里</b>，結清時每超 1 公里付 0.5 元；提前終止按 4 萬公里／年比例計。租賃合約另約定每年 4 萬公里、超出每公里加收 2 元維修保養費；36 期含維修版並有每月 3,333 公里保養里程與每 4 萬公里換一組輪胎之約定。跑透透的夥伴，簽約前先估年里程。</p>
+    </div>
+  </details>
+  <details>
+    <summary>加油卡與油費核銷規則</summary>
+    <div class="bd">
+      <p>過路費每月按實報支。加油發票必須載明公司統編＋車號，漏載者不予補助；事後補註明經主管核定以八折報銷。公司以 95 汽油為基準，使用 98 汽油以 9 折核銷。無正當理由不使用加油卡簽帳者，油費不予補助。</p>
+    </div>
+  </details>
+  <details>
+    <summary>轉內勤、離職、海外派遣的結清規則</summary>
+    <div class="bd">
+      <p>轉內勤：自調職日起三個月補助改為每月 2,000 元，之後取消；貸款車未結清貸款一次還清，或按原扣款金額二倍縮短攤還。離職：按未到期時間比例償還未結清貸款，離職日辦過戶及保險退保。海外派遣：上任前過戶結清。租賃車提前終止：純租繳折舊損失補償金、租購依解約價金對照表＋保證金。</p>
+    </div>
+  </details>
+  <details>
+    <summary>違規、保險與其他</summary>
+    <div class="bd">
+      <p>交通違規罰款自付，逾期不繳同意由薪資扣除並記點一次；記點達三次取消一次選擇貸款車或租賃車之權利。規定投保：強制險（貸款車公司全額補助）、竊盜險、第三人責任險，車損險型式自選。貸款車新車規費（領牌、行照、檢驗費）公司全額補助。二職等（含）以下購車排氣量上限 2,000c.c.。貸款車滿五年重購時原車里程逾 18 萬公里者，公司就原車每超 1 公里補貼 0.5 元。純電動車免徵牌照稅、燃料費期間，補貼參照財政部／公路局級距對應職等金額核銷。</p>
+    </div>
+  </details>
+</section>
+
+<footer>依公司車輛管理辦法（115.06 生效版）與租賃公司 115 年 3–7 月報價單整理；頁面更新 115.09.09，文件改版時同步更新。金額以公司最新公告為準，本頁僅供同仁參考。｜網站製作者：莊政遠</footer>
+</div>
+
+<script>
+const DATA = {
+  units: { biz: "業務單位", ani: "動物營養處研發" },
+  grades: { biz: ["5.6.7","3.4","2","1","C"], ani: ["5.6.7","3.4","2","1","C","B"] },
+  loan: {
+    biz: { term:60, rows:{ "1":{amt:450000,ded:7500,ins:15500,tax:11230,fuel:6210}, "C":{amt:520000,ded:8600,ins:16200,tax:11230,fuel:6210} } },
+    ani: { term:72, rows:{ "1":{amt:500000,ded:7000,ins:13800,tax:11230,fuel:6210}, "C":{amt:600000,ded:8300,ins:15200,tax:11230,fuel:6210}, "B":{amt:1000000,ded:13900,ins:18000,tax:15210,fuel:7200} } }
+  },
+  own: { biz:{ "5.6.7":8385,"3.4":8968,"2":9787,"1":10246,"C":11404 },
+         ani:{ "5.6.7":7326,"3.4":7726,"2":8487,"1":9604,"C":11021,"B":17268 } },
+  rent:{ biz:{ "5.6.7":9000,"3.4":9000,"2":9787,"1":10246,"C":11404 },
+         ani:{ "5.6.7":7326,"3.4":7726,"2":8487,"1":9604,"C":11021 } },
+  cars: [
+    { name:"Toyota Vios 經典", cc:1496, price:609000, pure36:13000, hp60b:11300, hp60c:10500, dep:110000 },
+    { name:"Yaris Cross 享樂", cc:1490, price:695000, pure36:12200, hp60b:12200, hp60c:11400, dep:130000 },
+    { name:"Corolla Altis 豪華", cc:1798, price:805000, pure36:12600, hp60b:14050, hp60c:12850, dep:150000 },
+    { name:"Corolla Cross 豪華", cc:1798, price:809000, pure36:13000, hp60b:14100, hp60c:12900, dep:150000 },
+    { name:"Honda HR-V 1.5S", cc:1498, price:799000, pure36:14500, hp60b:14900, hp60c:13900, dep:150000 },
+    { name:"Honda CR-V 1.5S", cc:1498, price:999000, pure36:18300, hp60b:18900, hp60c:18000, dep:200000 }
+  ]
+};
+
+/* ---------- sound engine (Web Audio, all synthesized) ---------- */
+let soundOn = true;
+try{ soundOn = localStorage.getItem("carSound") !== "off"; }catch(e){}
+let actx = null;
+function ac(){ if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(actx && actx.state==="suspended") actx.resume(); return actx; }
+function tone(freq, dur, type, vol, when=0, slideTo=null){
+  const c = ac(); if(!c || !soundOn) return;
+  const o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.setValueAtTime(freq, c.currentTime + when);
+  if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, c.currentTime + when + dur);
+  g.gain.setValueAtTime(0.0001, c.currentTime + when);
+  g.gain.exponentialRampToValueAtTime(vol, c.currentTime + when + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + when + dur);
+  o.connect(g); g.connect(c.destination);
+  o.start(c.currentTime + when); o.stop(c.currentTime + when + dur + 0.05);
+}
+const sfx = {
+  horn(){ tone(440,0.16,"square",0.16); tone(550,0.16,"square",0.16); tone(440,0.2,"square",0.16,0.22); tone(550,0.2,"square",0.16,0.22); },
+  engine(){ tone(70,0.7,"sawtooth",0.22,0,240); tone(140,0.7,"sawtooth",0.1,0,480); },
+  click(){ tone(900,0.06,"triangle",0.12); },
+  ding(){ tone(880,0.35,"sine",0.18); tone(1320,0.45,"sine",0.1,0.08); },
+  no(){ tone(220,0.25,"square",0.12,0,160); },
+};
+const soundBtn = document.getElementById("soundToggle");
+function paintSound(){ soundBtn.textContent = soundOn ? "🔊 音效開" : "🔇 音效關"; }
+soundBtn.onclick = () => { soundOn = !soundOn; try{ localStorage.setItem("carSound", soundOn?"on":"off"); }catch(e){} paintSound(); if(soundOn) sfx.horn(); };
+paintSound();
+
+/* car animation */
+const carEl = document.getElementById("carSvg"), tipEl = document.getElementById("honkTip");
+const spots = ["6%","22%","38%","54%","68%","80%"];
+let spotIdx = 0;
+function driveCar(){
+  spotIdx = (spotIdx + 1) % spots.length;
+  carEl.style.left = spots[spotIdx]; tipEl.style.left = spots[spotIdx];
+  carEl.classList.remove("bounce"); void carEl.offsetWidth; carEl.classList.add("bounce");
+  tipEl.style.opacity = .95; setTimeout(()=>tipEl.style.opacity = 0, 900);
+}
+carEl.addEventListener("click", ()=>{ sfx.horn(); driveCar(); });
+carEl.style.cursor = "pointer";
+
+/* ---------- app state ---------- */
+let st = { unit:"biz", grade:"3.4", senior:false };
+try{ const s=JSON.parse(localStorage.getItem("carPick")||"{}"); if(s.unit&&DATA.units[s.unit])st.unit=s.unit; if(s.grade)st.grade=s.grade; st.senior=!!s.senior; }catch(e){}
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString("zh-TW");
+
+function segRender(el, items, cur, cb){
+  el.innerHTML="";
+  items.forEach(([val,label])=>{
+    const b=document.createElement("button");
+    b.type="button"; b.textContent=label; if(val===cur)b.className="on";
+    b.onclick=()=>cb(val); el.appendChild(b);
+  });
+}
+function save(){ try{ localStorage.setItem("carPick", JSON.stringify(st)); }catch(e){} }
+
+function render(){
+  if(!DATA.grades[st.unit].includes(st.grade)) st.grade = "3.4";
+  segRender($("segUnit"), Object.entries(DATA.units), st.unit, v=>{ st.unit=v; save(); sfx.engine(); driveCar(); render(); });
+  segRender($("segGrade"), DATA.grades[st.unit].map(g=>[g, g.replace(/\./g,"·")+" 職等"]), st.grade, v=>{ st.grade=v; save(); sfx.horn(); driveCar(); render(); });
+  const isBiz = st.unit==="biz", g = st.grade;
+  const senRelevant = isBiz && (g==="3.4");
+  $("senWrap").style.display = senRelevant ? "" : "none";
+  if(!senRelevant) st.senior=false;
+  $("senior").checked = st.senior;
+  $("youline").innerHTML = "目前顯示：<b>"+DATA.units[st.unit]+"・"+g.replace(/\./g,"·")+" 職等</b>"+(st.senior?"（資深業務代表）":"")+" 的適用內容 🚙";
+
+  const loan = DATA.loan[st.unit].rows[g];
+  const own = DATA.own[st.unit][g];
+  const rent = DATA.rent[st.unit] ? DATA.rent[st.unit][g] : undefined;
+  let html = "";
+  if(loan){
+    html += `<div class="card"><h2>🚗 貸款車 <span class="pill ok">可申請</span></h2>
+      <div class="big">${fmt(loan.amt)}<small> 元・${DATA.loan[st.unit].term} 期</small></div>
+      <dl class="kv"><dt>每月薪資扣回</dt><dd>${fmt(loan.ded)} 元</dd>
+      <dt>車險補助／年</dt><dd>${fmt(loan.ins)} 元</dd>
+      <dt>牌照稅／年</dt><dd>${fmt(loan.tax)} 元</dd>
+      <dt>燃料費／年</dt><dd>${fmt(loan.fuel)} 元</dd></dl>
+      <p class="note">限購新車；強制險與新車規費公司全額補助。距退休不足 30 個月不得再貸款購車。</p></div>`;
+  } else {
+    html += `<div class="card na"><h2>🚗 貸款車 <span class="pill no">不適用</span></h2>
+      <div class="big">限一職等（含）以上</div>
+      <p class="note">貸款車限一職等（含）以上（${st.unit==="ani"?"研發另含 B 級":"業務單位為 1 職等與 C 級"}）。您的選項為自備車或租賃車。</p></div>`;
+  }
+  html += `<div class="card"><h2>🔑 自備車補助 <span class="pill ok">可申請</span></h2>
+    <div class="big">${fmt(own)}<small> 元／月</small></div>
+    <dl class="kv"><dt>涵蓋</dt><dd>車輛＋保險＋牌照稅＋燃料費</dd>
+    <dt>車輛所有權</dt><dd>員工本人</dd><dt>給付方式</dt><dd>簽租賃契約，按月領租金</dd></dl>
+    <p class="note">折舊、維修、殘值自負；離職無結清問題。保險投保內容應符合公司規範。</p></div>`;
+  if(rent!==undefined){
+    html += `<div class="card"><h2>🚕 租賃車補助 <span class="pill ok">可申請</span></h2>
+      <div class="big">${fmt(rent)}<small> 元／月（上限）</small></div>
+      <dl class="kv"><dt>超額租金</dt><dd>薪資自扣</dd><dt>租金已含</dt><dd>牌照稅・燃料稅・保險・監理規費</dd>
+      <dt>油費</dt><dd>另依加油卡實報</dd><dt>租購保證金</dt><dd>11–20 萬依車款（見下表）</dd></dl>
+      <p class="note">純租＝期滿還車、免保證金；租購＝期滿依汽車預買契約書承接。下表以此補助額試算自付。</p></div>`;
+  } else {
+    html += `<div class="card na"><h2>🚕 租賃車補助 <span class="pill no">辦法未列</span></h2>
+      <div class="big">B 級未列於租賃補助表</div>
+      <p class="note">租賃補助表動物營養處僅列至 C 級；B 級請洽行政服務部確認適用方式。</p></div>`;
+  }
+  $("cards").innerHTML = html;
+
+  let fuel;
+  if(st.senior){
+    fuel = `<b>⛽ 油費（資深業務代表）</b>　排氣量 <b>2,000c.c. 以下實報實支</b>——本頁六款車全數適用 🎉`;
+  } else if(g==="3.4"||g==="5.6.7"){
+    fuel = `<b>⛽ 油費（三職等含以下）</b>　1,800c.c. 以下<b>實報實支</b>；1,801c.c. 以上按報帳金額<b>八折</b>（油電混合車不受八折限制）。Altis／Corolla Cross＝1,798c.c. 壓線適用實報。`;
+  } else {
+    fuel = `<b>⛽ 油費</b>　排氣量八折限制僅規範三職等（含）以下；加油卡規則（統編＋車號、95 為基準、98 打 9 折）仍一體適用，過路費實報實支。`;
+  }
+  $("fuel").innerHTML = fuel;
+
+  const sub = rent===undefined ? 0 : rent;
+  $("rentSub").textContent = rent===undefined
+    ? "（此職等辦法未列租賃補助，下表僅列牌價租金供參考）"
+    : "自付＝月租金 − 補助 "+fmt(sub)+" 元；租金含 5% 稅。純租 36 期含維修（乙式）；租購 60 期不含維修、需保證金（見表）。🏆＝最低自付";
+  const pays = DATA.cars.map(c=>Math.max(0, Math.min(c.pure36,c.hp60b,c.hp60c)-sub));
+  const best = Math.min(...pays);
+  let t = `<thead><tr><th>車款</th><th>排氣量</th><th>車價</th><th>純租 36 期<br>含維修・免保證金</th><th>租購 60 期<br>乙式</th><th>租購 60 期<br>丙式</th><th>租購保證金<br>（乙丙同額）</th><th>最低自付／月</th></tr></thead><tbody>`;
+  DATA.cars.forEach((c,i)=>{
+    const p1=Math.max(0,c.pure36-sub), p2=Math.max(0,c.hp60b-sub), p3=Math.max(0,c.hp60c-sub);
+    const mn=Math.min(p1,p2,p3);
+    const cell=(r,p)=>`<td class="n">${fmt(r)}${rent!==undefined?`<br><span class="${p===0?"zero":"pay"+(p>=5000?" hi":"")}">${p===0?"補助全涵蓋":"自付 "+fmt(p)}</span>`:""}</td>`;
+    t += `<tr${rent!==undefined&&mn===best?' class="best"':''}><td><b>${c.name}</b></td><td class="n">${fmt(c.cc)}c.c.</td><td class="n">${fmt(c.price)}</td>${cell(c.pure36,p1)}${cell(c.hp60b,p2)}${cell(c.hp60c,p3)}<td class="n dep">${fmt(c.dep)}</td><td class="n ${mn===best&&rent!==undefined?"pay":""}">${rent!==undefined?fmt(mn):"—"}</td></tr>`;
+  });
+  t += "</tbody>";
+  $("rentTbl").innerHTML = t;
+}
+$("senior").addEventListener("change",e=>{ st.senior=e.target.checked; save(); e.target.checked?sfx.ding():sfx.click(); render(); });
+document.addEventListener("click", e=>{ if(e.target.closest("summary")) sfx.click(); });
+render();
+</script>
+</body>
+</html>
